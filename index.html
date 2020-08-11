@@ -70,14 +70,39 @@
     <script>
       const form = document.querySelector("form");
       const output = document.querySelector(".output");
-      form.onsubmit = e => {
-        e.preventDefault();
 
-        const fd = new FormData(form);
+      function fdToObject(fd) {
         const data = {};
         for (const [k, v] of fd.entries()) {
           data[k] = v;
         }
+        return data;
+      }
+      
+      function saveData(msg) {
+        const {key, secret, from, to, summary, body} = msg;
+        localStorage.setItem("key", key);
+        localStorage.setItem("secret", secret);
+        localStorage.setItem("from", from);
+        localStorage.setItem("to", to);
+      }
+
+      function loadData() {
+        ["key", "secret", "from", "to"].forEach(key => {
+          const value = localStorage.getItem(key);
+          if (value) {
+            form.querySelector(`#${key}`).value = value;
+          }
+        });
+      }
+      loadData();
+
+      form.onsubmit = e => {
+        e.preventDefault();
+
+        const fd = new FormData(form);
+        const data = fdToObject(fd);
+        saveData(data);
         output.textContent = `Sending e-mail...`;
         fetch("api/sendmail",
               {

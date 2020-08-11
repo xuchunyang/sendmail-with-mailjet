@@ -21,13 +21,9 @@ function sendmail(message, callback) {
 
   request
     .then(result => {
-      console.log(result);
-      console.log("\n\n\n");
-      console.log(result.body);
       callback(null, result);
     })
     .catch(err => {
-      console.log(err);
       callback(err, null);
     });
 }
@@ -56,7 +52,7 @@ module.exports = (req, res) => {
       res.end(JSON.stringify({error: err.message}, null, 2));
       return;
     }
-    res.statusCode = result.response.statusCode;
-    res.end(JSON.stringify(JSON.parse(result.response.text), null, 2));
+    res.statusCode = 200;
+    res.end(JSON.stringify(JSON.parse(result.response.text || `"something is wrong"`), null, 2));
   });
 };
