@@ -1,0 +1,19 @@
+{
+  "name": "sendmail-with-mailjet",
+  "version": "1.0.0",
+  "description": "Send E-mail with Mailjet API",
+  "main": "none",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xuchunyang/sendmail-with-mailjet.git"
+  },
+  "author": "Xu Chunyang",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/xuchunyang/sendmail-with-mailjet/issues"
+  },
+  "homepage": "https://github.com/xuchunyang/sendmail-with-mailjet#readme"
+}
