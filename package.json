@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/xuchunyang/sendmail-with-mailjet/issues"
   },
-  "homepage": "https://github.com/xuchunyang/sendmail-with-mailjet#readme"
+  "homepage": "https://github.com/xuchunyang/sendmail-with-mailjet#readme",
+  "dependencies": {
+    "node-mailjet": "^3.3.1"
+  }
 }

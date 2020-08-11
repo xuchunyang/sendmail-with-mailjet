@@ -24,7 +24,8 @@
         margin: 0 0.5em;
       }
 
-      h1 {
+      h1,
+      p.output {
         text-align: center;
       }
 
@@ -51,19 +52,56 @@
       <h1>Send E-mail with Mailjet</h1>
       <form>
         <label for="key">Mailjet API key:</label>
-        <input id="key" type="text" required>
+        <input id="key" name="key" type="text" required>
         <label for="secret">Mailjet secret key:</label>
-        <input id="secret" type="text" required>
+        <input id="secret" name="secret" type="text" required>
         <label for="from">From:</label>
-        <input id="from" type="email" required>
+        <input id="from" name="from" type="email" required>
         <label for="to">To:</label>
-        <input id="to" type="email" required>
+        <input id="to" name="to" type="email" required>
         <label for="summary">Summary:</label>
-        <input id="summary" type="text" required>
+        <input id="summary" name="summary" type="text" required>
         <label for="body">Body:</label>
-        <textarea id="body" rows="5"></textarea>
+        <textarea id="body" name="body" rows="5"></textarea>
         <button>Send</button>
       </form>
+      <p class="output"></p>
     </div>
+    <script>
+      const form = document.querySelector("form");
+      const output = document.querySelector(".output");
+      form.onsubmit = e => {
+        e.preventDefault();
+
+        const fd = new FormData(form);
+        const data = {};
+        for (const [k, v] of fd.entries()) {
+          data[k] = v;
+        }
+        output.textContent = `Sending e-mail...`;
+        fetch("api/sendmail",
+              {
+                method: "POST",
+                headers: {
+                  "content-type": "application/json"
+                },
+                body: JSON.stringify(data)
+              })
+          .then(res => res.json())
+          .then(json => {
+            console.log(json);
+            const {error} = json;
+            if (error) {
+              output.textContent = error;
+            } else {
+              output.textContent = "E-mail sent successfully";  
+            }
+          })
+          .catch(error => {
+            console.log("Fetch error", error);
+            output.textContent = error.message;
+          });
+      };
+    </script>
   </body>
 </html>
