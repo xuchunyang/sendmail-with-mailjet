@@ -33,6 +33,7 @@
         grid-template-columns: auto 1fr;
         grid-row-gap: 1em;
         grid-column-gap: 0.5em;
+        align-items: center;
       }
 
       label {
@@ -49,12 +50,18 @@
     <div class="container">
       <h1>Send E-mail with Mailjet</h1>
       <form>
-        <label for="email">To:</label>
-        <input id="email" type="email" required>
+        <label for="key">Mailjet API key:</label>
+        <input id="key" type="text" required>
+        <label for="secret">Mailjet secret key:</label>
+        <input id="secret" type="text" required>
+        <label for="from">From:</label>
+        <input id="from" type="email" required>
+        <label for="to">To:</label>
+        <input id="to" type="email" required>
         <label for="summary">Summary:</label>
         <input id="summary" type="text" required>
         <label for="body">Body:</label>
-        <textarea rows="5"></textarea>
+        <textarea id="body" rows="5"></textarea>
         <button>Send</button>
       </form>
     </div>
