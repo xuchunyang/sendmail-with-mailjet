@@ -90,7 +90,7 @@
             [...files].map(async file => {
               const ContentType = file.type;
               const Filename = file.name;
-              const Base64Content = ab2str(await file.arrayBuffer());
+              const Base64Content = btoa(ab2str(await file.arrayBuffer()));
               return {ContentType, Filename, Base64Content};
             }));
         return data;
