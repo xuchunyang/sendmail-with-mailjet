@@ -1,5 +1,5 @@
 function sendmail(message, callback) {
-  const {key, secret, from, to, summary, body} = message;
+  const {key, secret, from, to, summary, body, Attachments} = message;
 
   const mailjet = require("node-mailjet").connect(key, secret);
   const request = mailjet.post("send", { version: "v3.1" }).request({
@@ -14,7 +14,8 @@ function sendmail(message, callback) {
           },
         ],
         Subject: summary,
-        TextPart: body
+        TextPart: body,
+        Attachments
       },
     ],
   });

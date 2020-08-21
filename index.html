@@ -63,19 +63,36 @@
         <input id="summary" name="summary" type="text" required>
         <label for="body">Body:</label>
         <textarea id="body" name="body" rows="5"></textarea>
+        <label for="attachment">Attachment:</label>
+        <input id="attachment" name="attachment" type="file" multiple>
         <button>Send</button>
       </form>
       <p class="output"></p>
     </div>
     <script>
+      const fileInput = document.querySelector("input[type='file']");
       const form = document.querySelector("form");
       const output = document.querySelector(".output");
 
-      function fdToObject(fd) {
+      function ab2str(buf) {
+        return String.fromCharCode.apply(null, new Uint8Array(buf));
+      }
+      
+      async function fdToObject(fd) {
         const data = {};
         for (const [k, v] of fd.entries()) {
+          if (k === "attachment") continue;
           data[k] = v;
         }
+        const files = document.querySelector("#attachment").files;
+        data.Attachments =
+          await Promise.all(
+            [...files].map(async file => {
+              const ContentType = file.type;
+              const Filename = file.name;
+              const Base64Content = ab2str(await file.arrayBuffer());
+              return {ContentType, Filename, Base64Content};
+            }));
         return data;
       }
       
@@ -97,11 +114,12 @@
       }
       loadData();
 
-      form.onsubmit = e => {
+      form.onsubmit = async e => {
         e.preventDefault();
 
         const fd = new FormData(form);
-        const data = fdToObject(fd);
+        const data = await fdToObject(fd);
+        console.log("Sending:", data);
         saveData(data);
         output.textContent = `Sending e-mail...`;
         fetch("api/sendmail",
